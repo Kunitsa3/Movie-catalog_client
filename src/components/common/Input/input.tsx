@@ -1,16 +1,22 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
-import { FC, useState } from 'react';
+import { FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import React, { FC, useState } from 'react';
 import { InputWrapper } from './styled';
 
 interface InputProps {
   value: string;
+  name: string;
   label: string;
   isPassword: boolean;
+  errorsMessage?: string | null;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: {
+    (e: React.FocusEvent<any, Element>): void;
+    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
+  };
 }
 
-const Input: FC<InputProps> = ({ value, onChange, isPassword, label }) => {
+const Input: FC<InputProps> = ({ value, onChange, isPassword, label, errorsMessage, onBlur, name }) => {
   const [visibility, setVisibility] = useState(false);
   const type = isPassword ? (visibility ? 'text' : 'password') : 'text';
 
@@ -28,8 +34,10 @@ const Input: FC<InputProps> = ({ value, onChange, isPassword, label }) => {
       <OutlinedInput
         id={label}
         type={type}
+        name={name}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         endAdornment={
           isPassword ? (
             <InputAdornment position="end">
@@ -46,6 +54,7 @@ const Input: FC<InputProps> = ({ value, onChange, isPassword, label }) => {
         }
         label={label}
       />
+      <FormHelperText error={!!errorsMessage}>{errorsMessage}</FormHelperText>
     </InputWrapper>
   );
 };

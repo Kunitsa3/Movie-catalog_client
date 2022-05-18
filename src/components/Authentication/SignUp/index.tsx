@@ -8,11 +8,13 @@ import { ButtonWrapper, SignInForm, AuthWrapper, SubmitButton } from '../styled'
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
+  username: yup.string().min(3).max(30).required(),
   password: yup.string().required(),
+  confirmPassword: yup.string().equals([yup.ref('password')], 'should be equal to password'),
 });
 
 interface Props {
-  key: 'email' | 'password';
+  key: 'email' | 'password' | 'username' | 'confirmPassword';
   label: string;
   isPassword: boolean;
 }
@@ -28,17 +30,29 @@ const inputsProps: Props[] = [
     isPassword: false,
   },
   {
+    key: 'username',
+    label: 'Username',
+    isPassword: false,
+  },
+  {
     key: 'password',
     label: 'Password',
     isPassword: true,
   },
+  {
+    key: 'confirmPassword',
+    label: 'Confirm password',
+    isPassword: true,
+  },
 ];
 
-const SignIn: FC<SignInProps> = ({ setSignInModalOpened }) => {
+const SignUp: FC<SignInProps> = ({ setSignInModalOpened }) => {
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: '',
+      username: '',
       password: '',
+      confirmPassword: '',
     },
     validationSchema: schema,
     onSubmit: values => {},
@@ -47,7 +61,7 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened }) => {
   return (
     <AuthWrapper elevation={3}>
       <Typography variant="h2" gutterBottom component="div">
-        Sign In
+        Sign Up
       </Typography>
       <SignInForm onSubmit={handleSubmit}>
         {inputsProps.map(({ key, isPassword, label }) => (
@@ -62,10 +76,10 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened }) => {
             errorsMessage={(errors[key] && touched[key] && errors[key]) || null}
           />
         ))}
-        <HelperText text="Don't have an account?" linkText="Sign up" onClick={setSignInModalOpened} />
+        <HelperText text="Already signed up?" linkText="Go to login" onClick={setSignInModalOpened} />
         <ButtonWrapper>
           <SubmitButton variant="outlined" size="medium" type="submit">
-            Sign In
+            Sign Up
           </SubmitButton>
         </ButtonWrapper>
       </SignInForm>
@@ -73,4 +87,4 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened }) => {
   );
 };
 
-export default SignIn;
+export default SignUp;

@@ -4,7 +4,7 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 export const HelperTextWrapper = styled(Container)({
   display: 'flex',
   justifyContent: 'center',
-  marginTop: '20px',
+  marginTop: '10px',
 });
 
 export const ColoredText = styled(Typography)({
