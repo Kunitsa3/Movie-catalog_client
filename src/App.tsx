@@ -1,13 +1,13 @@
-import React from 'react';
+import { Box } from '@mui/material';
 import './App.css';
 import Header from './components/Header';
 
 const App = () => {
   return (
-    <div className="App">
-      <Header/>
-    </div>
+    <Box className="App">
+      <Header />
+    </Box>
   );
-}
+};
 
 export default App;

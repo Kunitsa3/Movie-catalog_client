@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { InputWrapper } from './styled';
 

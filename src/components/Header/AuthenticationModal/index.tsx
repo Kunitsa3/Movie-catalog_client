@@ -1,4 +1,4 @@
-import { Modal } from '@mui/material';
+import { Box, Modal } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Authentication from '../../Authentication';
@@ -15,7 +15,7 @@ const AuthenticationModal = () => {
   };
 
   return (
-    <div>
+    <Box>
       <Button color="inherit" onClick={handleClickOpen}>
         Login
       </Button>
@@ -25,9 +25,9 @@ const AuthenticationModal = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Authentication />
+        <Authentication onClose={handleClose} />
       </Modal>
-    </div>
+    </Box>
   );
 };
 

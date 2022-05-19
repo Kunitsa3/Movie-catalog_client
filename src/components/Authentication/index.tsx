@@ -1,29 +1,33 @@
-import { Box } from '@mui/material';
-import { Container } from '@mui/system';
-import { useState } from 'react';
+import { FC, forwardRef, ForwardRefRenderFunction, memo, useState } from 'react';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { AuthBox } from './styled';
 
-const Authentication = () => {
+interface AuthenticationProps {
+  onClose: () => void;
+}
+
+const Authentication: ForwardRefRenderFunction<HTMLDivElement, AuthenticationProps> = ({ onClose }, ref) => {
   const [isSignInModalOpened, setSignInModalOpened] = useState(true);
   return (
-    <AuthBox>
+    <AuthBox ref={ref} tabIndex={0}>
       {isSignInModalOpened ? (
         <SignIn
           setSignInModalOpened={() => {
             setSignInModalOpened(!isSignInModalOpened);
           }}
+          onClose={onClose}
         />
       ) : (
         <SignUp
           setSignInModalOpened={() => {
             setSignInModalOpened(!isSignInModalOpened);
           }}
+          onClose={onClose}
         />
       )}
     </AuthBox>
   );
 };
 
-export default Authentication;
+export default forwardRef(Authentication);

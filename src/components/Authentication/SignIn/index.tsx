@@ -1,10 +1,13 @@
 import * as yup from 'yup';
-import { Typography } from '@mui/material';
+import { FormHelperText, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { FC } from 'react';
 import Input from '../../common/Input/input';
 import HelperText from '../HelperText';
 import { ButtonWrapper, SignInForm, AuthWrapper, SubmitButton } from '../styled';
+import { useMutation } from '@apollo/client';
+import { logInData } from '../../../types';
+import { LOGIN } from '../../../queries/user';
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
@@ -19,6 +22,7 @@ interface Props {
 
 interface SignInProps {
   setSignInModalOpened: () => void;
+  onClose: () => void;
 }
 
 const inputsProps: Props[] = [
@@ -34,14 +38,25 @@ const inputsProps: Props[] = [
   },
 ];
 
-const SignIn: FC<SignInProps> = ({ setSignInModalOpened }) => {
+const SignIn: FC<SignInProps> = ({ setSignInModalOpened, onClose }) => {
+  const [login, { error }] = useMutation<{ logIn: String }, { logInData: logInData }>(LOGIN, {
+    onCompleted: () => {
+      localStorage.setItem('authToken', 'true');
+
+      onClose();
+    },
+  });
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     validationSchema: schema,
-    onSubmit: values => {},
+    onSubmit: async values => {
+      login({
+        variables: { logInData: { email: values.email, password: values.password } },
+      });
+    },
   });
 
   return (
@@ -63,6 +78,7 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened }) => {
           />
         ))}
         <HelperText text="Don't have an account?" linkText="Sign up" onClick={setSignInModalOpened} />
+        <FormHelperText error={!!error?.message}>{error?.message}</FormHelperText>
         <ButtonWrapper>
           <SubmitButton variant="outlined" size="medium" type="submit">
             Sign In

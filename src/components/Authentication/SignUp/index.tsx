@@ -1,10 +1,13 @@
 import * as yup from 'yup';
-import { Typography } from '@mui/material';
+import { FormHelperText, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { FC } from 'react';
 import Input from '../../common/Input/input';
 import HelperText from '../HelperText';
 import { ButtonWrapper, SignInForm, AuthWrapper, SubmitButton } from '../styled';
+import { useMutation } from '@apollo/client';
+import { REGISTER } from '../../../queries/user';
+import { registerData } from '../../../types';
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
@@ -21,6 +24,7 @@ interface Props {
 
 interface SignInProps {
   setSignInModalOpened: () => void;
+  onClose: () => void;
 }
 
 const inputsProps: Props[] = [
@@ -46,7 +50,14 @@ const inputsProps: Props[] = [
   },
 ];
 
-const SignUp: FC<SignInProps> = ({ setSignInModalOpened }) => {
+const SignUp: FC<SignInProps> = ({ setSignInModalOpened, onClose }) => {
+  const [register, { error }] = useMutation<{ register: String }, { registerData: registerData }>(REGISTER, {
+    onCompleted: () => {
+      localStorage.setItem('authToken', 'true');
+
+      onClose();
+    },
+  });
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: '',
@@ -55,7 +66,11 @@ const SignUp: FC<SignInProps> = ({ setSignInModalOpened }) => {
       confirmPassword: '',
     },
     validationSchema: schema,
-    onSubmit: values => {},
+    onSubmit: async values => {
+      const result = await register({
+        variables: { registerData: { email: values.email, username: values.username, password: values.password } },
+      });
+    },
   });
 
   return (
@@ -77,6 +92,7 @@ const SignUp: FC<SignInProps> = ({ setSignInModalOpened }) => {
           />
         ))}
         <HelperText text="Already signed up?" linkText="Go to login" onClick={setSignInModalOpened} />
+        <FormHelperText error={!!error?.message}>{error?.message}</FormHelperText>
         <ButtonWrapper>
           <SubmitButton variant="outlined" size="medium" type="submit">
             Sign Up
