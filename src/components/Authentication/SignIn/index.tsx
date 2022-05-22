@@ -1,13 +1,15 @@
-import * as yup from 'yup';
+import { FC, useContext } from 'react';
 import { FormHelperText, Typography } from '@mui/material';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { FC } from 'react';
-import Input from '../../common/Input/input';
+import { useMutation } from '@apollo/client';
+
 import HelperText from '../HelperText';
 import { ButtonWrapper, SignInForm, AuthWrapper, SubmitButton } from '../styled';
-import { useMutation } from '@apollo/client';
+import Input from '../../common/Input/input';
 import { logInData } from '../../../types';
 import { LOGIN } from '../../../queries/user';
+import { AppContext } from '../../../App';
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
@@ -39,10 +41,11 @@ const inputsProps: Props[] = [
 ];
 
 const SignIn: FC<SignInProps> = ({ setSignInModalOpened, onClose }) => {
+  const setNotification = useContext(AppContext);
   const [login, { error }] = useMutation<{ logIn: String }, { logInData: logInData }>(LOGIN, {
     onCompleted: () => {
       localStorage.setItem('authToken', 'true');
-
+      setNotification({ message: 'Successful login', type: 'success' });
       onClose();
     },
   });

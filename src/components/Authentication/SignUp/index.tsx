@@ -1,13 +1,15 @@
-import * as yup from 'yup';
+import { FC, useContext } from 'react';
 import { FormHelperText, Typography } from '@mui/material';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { FC } from 'react';
-import Input from '../../common/Input/input';
+import { useMutation } from '@apollo/client';
+
 import HelperText from '../HelperText';
 import { ButtonWrapper, SignInForm, AuthWrapper, SubmitButton } from '../styled';
-import { useMutation } from '@apollo/client';
+import Input from '../../common/Input/input';
 import { REGISTER } from '../../../queries/user';
 import { registerData } from '../../../types';
+import { AppContext } from '../../../App';
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
@@ -51,10 +53,11 @@ const inputsProps: Props[] = [
 ];
 
 const SignUp: FC<SignInProps> = ({ setSignInModalOpened, onClose }) => {
+  const setNotification = useContext(AppContext);
   const [register, { error }] = useMutation<{ register: String }, { registerData: registerData }>(REGISTER, {
     onCompleted: () => {
       localStorage.setItem('authToken', 'true');
-
+      setNotification({ message: 'Successful login', type: 'success' });
       onClose();
     },
   });
@@ -67,7 +70,7 @@ const SignUp: FC<SignInProps> = ({ setSignInModalOpened, onClose }) => {
     },
     validationSchema: schema,
     onSubmit: async values => {
-      const result = await register({
+      register({
         variables: { registerData: { email: values.email, username: values.username, password: values.password } },
       });
     },

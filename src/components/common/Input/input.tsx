@@ -1,6 +1,7 @@
+import React, { FC, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
-import React, { FC, useState } from 'react';
+
 import { InputWrapper } from './styled';
 
 interface InputProps {
@@ -16,7 +17,7 @@ interface InputProps {
   };
 }
 
-const Input: FC<InputProps> = ({ value, onChange, isPassword, label, errorsMessage, onBlur, name }) => {
+const Input: FC<InputProps> = ({ isPassword, label, errorsMessage, ...props }) => {
   const [visibility, setVisibility] = useState(false);
   const type = isPassword ? (visibility ? 'text' : 'password') : 'text';
 
@@ -34,10 +35,7 @@ const Input: FC<InputProps> = ({ value, onChange, isPassword, label, errorsMessa
       <OutlinedInput
         id={label}
         type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
+        {...props}
         endAdornment={
           isPassword ? (
             <InputAdornment position="end">
