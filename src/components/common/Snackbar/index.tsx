@@ -1,6 +1,7 @@
+import { FC, useState } from 'react';
 import { AlertColor } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import { FC, useState } from 'react';
+
 import Alert from './Alert';
 
 export interface NotificationProps {

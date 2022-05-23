@@ -10,6 +10,7 @@ import Input from '../../common/Input/input';
 import { REGISTER } from '../../../queries/user';
 import { registerData } from '../../../types';
 import { AppContext } from '../../../App';
+import { isLoggedInVar } from '../../../cache';
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
@@ -58,6 +59,7 @@ const SignUp: FC<SignInProps> = ({ setSignInModalOpened, onClose }) => {
     onCompleted: () => {
       localStorage.setItem('authToken', 'true');
       setNotification({ message: 'Successful login', type: 'success' });
+      isLoggedInVar(true);
       onClose();
     },
   });

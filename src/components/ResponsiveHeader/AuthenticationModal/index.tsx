@@ -1,6 +1,7 @@
-import { Box, Modal } from '@mui/material';
-import Button from '@mui/material/Button';
 import { useState } from 'react';
+import { ListItem, ListItemButton, ListItemIcon, ListItemText, Modal } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
+
 import Authentication from '../../Authentication';
 
 const AuthenticationModal = () => {
@@ -15,10 +16,13 @@ const AuthenticationModal = () => {
   };
 
   return (
-    <Box>
-      <Button color="inherit" onClick={handleClickOpen}>
-        Login
-      </Button>
+    <ListItem disablePadding>
+      <ListItemButton onClick={handleClickOpen}>
+        <ListItemIcon>
+          <LoginIcon />
+        </ListItemIcon>
+        <ListItemText primary="Login" />
+      </ListItemButton>
       <Modal
         open={open}
         onClose={handleClose}
@@ -27,7 +31,7 @@ const AuthenticationModal = () => {
       >
         <Authentication onClose={handleClose} />
       </Modal>
-    </Box>
+    </ListItem>
   );
 };
 
