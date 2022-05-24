@@ -1,4 +1,4 @@
-import { AppBar, Drawer, IconButton, styled } from '@mui/material';
+import { AppBar, Drawer, IconButton, ListItemButton, styled } from '@mui/material';
 import { Box } from '@mui/system';
 
 export const HeaderWrapper = styled(Box)({
@@ -7,8 +7,7 @@ export const HeaderWrapper = styled(Box)({
 
 export const HorizontalHeader = styled(AppBar)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
-    width: 'calc(100% - 240px)',
-    marginLeft: '240px',
+    display: 'none',
   },
 }));
 
@@ -20,6 +19,7 @@ export const MenuItemWrapper = styled(IconButton)(({ theme }) => ({
 }));
 
 export const NavigationWrapper = styled(Box)(({ theme }) => ({
+  backgroundColor: 'blue',
   [theme.breakpoints.up('sm')]: {
     width: 240,
     flexShrink: 0,
@@ -39,7 +39,7 @@ export const MobileNavigation = styled(Drawer)(({ theme }) => ({
 }));
 
 export const Navigation = styled(Drawer)(({ theme }) => ({
-  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240, backgroundColor: '#e0e0e0' },
 
   [theme.breakpoints.up('sm')]: {
     display: 'block',
@@ -48,4 +48,10 @@ export const Navigation = styled(Drawer)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     display: 'none',
   },
+}));
+
+export const NavigationItem = styled(ListItemButton, {
+  shouldForwardProp: propName => propName !== 'isActive',
+})<{ isActive: boolean }>(({ isActive }) => ({
+  color: isActive ? '#0277bd' : '#676767',
 }));

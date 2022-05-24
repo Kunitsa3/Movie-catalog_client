@@ -1,6 +1,5 @@
-import { InMemoryCache, makeVar } from '@apollo/client';
-
-export const isLoggedInVar = makeVar<boolean>(!!localStorage.getItem('authToken'));
+import { InMemoryCache } from '@apollo/client';
+import { isLoggedInVar } from './constants';
 
 export const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {

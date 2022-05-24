@@ -16,22 +16,26 @@ import Typography from '@mui/material/Typography';
 import { useReactiveVar } from '@apollo/client';
 
 import AuthenticationModal from './AuthenticationModal';
-import { isLoggedInVar } from '../../cache';
 import {
   HeaderWrapper,
   HorizontalHeader,
   MenuItemWrapper,
   MobileNavigation,
   Navigation,
+  NavigationItem,
   NavigationWrapper,
 } from './styled';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { isLoggedInVar } from '../../cache/constants';
 
 const Pages = [
-  { name: 'Main page', logo: <HomeIcon /> },
-  { name: 'Movies', logo: <MovieFilterIcon /> },
+  { name: 'Main page', logo: <HomeIcon />, path: '/main' },
+  { name: 'Movies', logo: <MovieFilterIcon />, path: '/movies' },
 ];
 
 const Header: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const token = useReactiveVar(isLoggedInVar);
 
@@ -44,14 +48,23 @@ const Header: FC = () => {
       <Toolbar />
       <Divider />
       <List>
-        {Pages.map((page, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>{page.logo}</ListItemIcon>
-              <ListItemText primary={page.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {Pages.map((page, index) => {
+          const isActive = !!matchPath(page.path, location.pathname);
+          return (
+            <ListItem
+              key={index}
+              disablePadding
+              onClick={() => {
+                navigate(page.path);
+              }}
+            >
+              <NavigationItem isActive={isActive}>
+                <ListItemIcon>{page.logo}</ListItemIcon>
+                <ListItemText primary={page.name} />
+              </NavigationItem>
+            </ListItem>
+          );
+        })}
       </List>
       <Divider />
       <List>
@@ -72,7 +85,7 @@ const Header: FC = () => {
   return (
     <HeaderWrapper>
       <CssBaseline />
-      <HorizontalHeader position="fixed">
+      <HorizontalHeader position="fixed" color="transparent">
         <Toolbar>
           <MenuItemWrapper color="inherit" aria-label="open drawer" edge="start" onClick={handleDrawerToggle}>
             <MenuIcon />
@@ -82,7 +95,7 @@ const Header: FC = () => {
           </Typography>
         </Toolbar>
       </HorizontalHeader>
-      <NavigationWrapper component="nav" aria-label="mailbox folders">
+      <NavigationWrapper component="nav">
         <MobileNavigation
           variant="temporary"
           open={mobileOpen}

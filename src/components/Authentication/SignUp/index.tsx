@@ -10,7 +10,7 @@ import Input from '../../common/Input/input';
 import { REGISTER } from '../../../queries/user';
 import { registerData } from '../../../types';
 import { AppContext } from '../../../App';
-import { isLoggedInVar } from '../../../cache';
+import { isLoggedInVar } from '../../../cache/constants';
 
 const schema = yup.object().shape({
   email: yup.string().email('invalid email').required(),
