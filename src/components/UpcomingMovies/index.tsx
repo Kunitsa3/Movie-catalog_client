@@ -44,7 +44,7 @@ const UpcomingMovies: FC = () => {
         modules={[Navigation]}
       >
         {moviesData?.map(movieData => (
-          <SwiperSlide>
+          <SwiperSlide key={movieData?.id}>
             <UpcomingMoviesCard elevation={8}>
               <MovieInformationWrapper>
                 <MovieInformation>

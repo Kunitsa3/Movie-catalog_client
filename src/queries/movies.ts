@@ -28,3 +28,32 @@ export const UPCOMING = gql`
     }
   }
 `;
+
+export const MOVIE = gql`
+  query ($params: Params!) {
+    getMovieDetails(params: $params) {
+      adult
+      budget
+      genres {
+        name
+      }
+      homepage
+      id
+      imdb_id
+      original_title
+      overview
+      popularity
+      poster_path
+      release_date
+      runtime
+      vote_average
+      production_countries {
+        name
+      }
+      production_companies {
+        name
+        logo_path
+      }
+    }
+  }
+`;
