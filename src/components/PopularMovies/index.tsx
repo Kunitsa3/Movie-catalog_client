@@ -10,9 +10,11 @@ import 'swiper/css/navigation';
 import { InformationButton, PopularMovieImage, PopularMoviesTitle, PopularMoviesWrapper } from './styled';
 import { APIMovieData, Params } from '../../types';
 import { POPULAR } from '../../queries/movies';
+import { useNavigate } from 'react-router-dom';
 
 const PopularMovies: FC = () => {
   const ref = useRef<HTMLDivElement>();
+  const navigate = useNavigate();
   const { data } = useQuery<{ popularMovies: APIMovieData }, { params: Params }>(POPULAR, {
     variables: { params: { page: 1 } },
   });
@@ -34,7 +36,12 @@ const PopularMovies: FC = () => {
                 title={movieData?.original_title}
                 subtitle={movieData?.release_date.slice(0, 4)}
                 actionIcon={
-                  <InformationButton aria-label={`info about`}>
+                  <InformationButton
+                    aria-label={`info about`}
+                    onClick={() => {
+                      navigate(`/movie/${movieData?.id}`);
+                    }}
+                  >
                     <InfoIcon />
                   </InformationButton>
                 }

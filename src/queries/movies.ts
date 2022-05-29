@@ -57,3 +57,19 @@ export const MOVIE = gql`
     }
   }
 `;
+
+export const MOVIE_BY_PARAMS = gql`
+  query ($params: Params!) {
+    getMoviesByParams(params: $params) {
+      results {
+        original_title
+        poster_path
+        id
+        adult
+        overview
+        vote_average
+        release_date
+      }
+    }
+  }
+`;

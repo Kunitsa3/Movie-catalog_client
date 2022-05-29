@@ -22,9 +22,11 @@ import {
   Rating,
   MovieImage,
 } from './styled';
+import { useNavigate } from 'react-router-dom';
 
 const UpcomingMovies: FC = () => {
   const ref = useRef<HTMLDivElement>();
+  const navigate = useNavigate();
   const { data } = useQuery<{ upcomingMovies: APIMovieData }, { params: Params }>(UPCOMING, {
     variables: { params: { page: 1 } },
   });
@@ -44,7 +46,12 @@ const UpcomingMovies: FC = () => {
         modules={[Navigation]}
       >
         {moviesData?.map(movieData => (
-          <SwiperSlide key={movieData?.id}>
+          <SwiperSlide
+            key={movieData?.id}
+            onClick={() => {
+              navigate(`/movie/${movieData?.id}`);
+            }}
+          >
             <UpcomingMoviesCard elevation={8}>
               <MovieInformationWrapper>
                 <MovieInformation>

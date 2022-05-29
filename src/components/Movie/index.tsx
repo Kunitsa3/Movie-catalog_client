@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { Typography } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -18,16 +19,18 @@ import {
 } from './styled';
 import { MOVIE } from '../../queries/movies';
 import { MovieDetails, Params } from '../../types';
+import Spinner from '../common/Spinner';
 
 const Movie: FC = () => {
+  const { id } = useParams();
   const { data } = useQuery<{ getMovieDetails: MovieDetails }, { params: Params }>(MOVIE, {
-    variables: { params: { id: 639933 } },
+    variables: { params: { id: Number(id) } },
   });
   const moviesData = data?.getMovieDetails;
-  const genresString = moviesData?.genres.map(genre => genre.name).join(', ');
-  const productCountriesString = moviesData?.production_countries.map(company => company.name).join(', ');
+  const genresString = (moviesData?.genres, 'name');
+  const productCountriesString = (moviesData?.production_countries, 'name');
 
-  return (
+  return moviesData ? (
     <MovieWrapper>
       <MovieImage component="img" image={`https://image.tmdb.org/t/p/original${moviesData?.poster_path}`} />
       <MovieInformation>
@@ -50,6 +53,8 @@ const Movie: FC = () => {
         </BottomDetailsWrapper>
       </MovieInformation>
     </MovieWrapper>
+  ) : (
+    <Spinner />
   );
 };
 
