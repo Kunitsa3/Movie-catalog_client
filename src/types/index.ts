@@ -39,9 +39,9 @@ export interface Params {
   page?: number;
   id?: number;
   year?: number;
-  genres?: string[];
-  withoutGenres?: string[];
-  sortBy?: string;
+  with_genres?: string;
+  without_genres?: string;
+  sort_by?: string;
 }
 
 export interface Genre {
@@ -92,4 +92,8 @@ export interface MovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
+}
+
+export interface GenresDetails {
+  genres: Genre[];
 }

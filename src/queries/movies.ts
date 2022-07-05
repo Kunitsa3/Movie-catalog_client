@@ -73,3 +73,14 @@ export const MOVIE_BY_PARAMS = gql`
     }
   }
 `;
+
+export const MOVIE_GENRES = gql(`
+    query {
+      getMoviesGenres {
+        genres {
+          id
+          name
+        }
+      }
+    }
+`);
